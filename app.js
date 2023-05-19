@@ -16,10 +16,13 @@ app.use(abnormal)
 const login = require('./router/login/login');
 // 引入上传文件 api
 const upload = require('./router/upload/upload');
+// 引入订单 api
+const order = require('./router/order/order');
 
 // 配置注册路由接口
 router.use('/api', login)  // 用户注册：localhost:8000/api/register
 router.use('/api', upload)
+router.use('/api', order)
 
 // 启动路由
 app.use(router.routes())

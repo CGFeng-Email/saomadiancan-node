@@ -30,6 +30,8 @@ const {
 const {
     verifyToken
 } = require('../../jwt/verify');
+
+// 解析前端在header中传来的token
 const {
     parse
 } = require('basic-auth');

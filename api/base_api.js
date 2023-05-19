@@ -8,6 +8,7 @@ const handle = require('../config/handle');
 const qs = require('querystring');
 
 // qs拼接参数
+// secret：小程序密钥
 const params = qs.stringify({
     grant_type: 'client_credential',
     appid: 'wxb81dc480cbe6c823',
@@ -28,6 +29,9 @@ const queryApi = 'https://api.weixin.qq.com/tcb/databasequery?access_token=';
 
 // 更新记录url
 const uploadApi = 'https://api.weixin.qq.com/tcb/databaseupdate?access_token=';
+
+// 发送订阅消息
+const subscribeMessageApi = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=';
 
 // 获取接口调用凭据 - 小程序 - 服务端
 class getToken {
@@ -75,6 +79,38 @@ class getToken {
             throw new handle(error, 500)
         }
     }
+	
+	// 订阅消息
+	async subscribeMessageApiFn(openid, data, miniprogram_state = 'ormal', template_id) {
+		
+		// 点击订阅消息 跳转的页面
+		const page = 'pages/my_order/my_order';
+		// openid: 接收者（用户）的 openid 当前订单的openid 动态的
+		// data: 模板内容[]
+		// miniprogram_state: 小程序开发版本类型 版本类型 developer为开发版；trial为体验版；formal为正式版；
+		// template_id: 订阅消息模板id
+		try {
+			// 获取token
+			const token = await this.getTokenFn();
+			
+			const params = {
+				touser: openid,
+				data,
+				template_id,
+				page,
+				miniprogram_state
+			}
+			
+			console.log('params', params);
+			
+			const pp = await axios.post(subscribeMessageApi + token, params);
+			console.log('pp', pp);
+			
+		} catch(err) {
+			throw new handle('发送订阅消息失败，服务器发送错误', 500)
+		}
+	}
+	
 }
 
 // 导出
