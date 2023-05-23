@@ -115,7 +115,7 @@ router.post('/editOrderStatus', new verifyToken().m, async ctx => {
 router.post('/checkout', new verifyToken().m, async ctx => {
 	const {openid, miniprogram_state, message, order_an, total_account, order_center, id} = ctx.request.body;
 	const total_account_number = commerce_price(Number(total_account));
-	// 模板id
+	// 模板id - 要跟前端那边的弹窗授权权限弹窗相对应 不然无法成功验证
 	const template_id = 'bJPBBHnt8ibU-jTQZp7xhma4mPw8vIp0stZNW7ScgAY';
 	
 	// data: 模板内容
