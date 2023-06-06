@@ -83,7 +83,7 @@ router.post('/editOrderStatus', new verifyToken().m, async ctx => {
 	// 根据当前的订单id去修改接单信息
 	const {id, order_an, total_account, openid, miniprogram_state} = ctx.request.body;
 	
-	// api
+	// api 更新当前订单接单状态 改为已接单
 	const query = `db.collection('orderData').doc('${id}').update({data: {order_status: 'yes'}})`;
 	
 	// 订阅消息模板id
@@ -99,10 +99,11 @@ router.post('/editOrderStatus', new verifyToken().m, async ctx => {
 		'amount8': {'value': total_account_number}
 	}
 	
-	
 	try{
+		// 请求云数据库 更新订单状态
 		await new getToken().publicApi(uploadApi, query);
 		
+		// 调用订阅消息api
 		await new getToken().subscribeMessageApiFn(openid, data, miniprogram_state, template_id);
 		
 		new result(ctx, '已接单，请等待片刻').answer();
@@ -116,7 +117,7 @@ router.post('/checkout', new verifyToken().m, async ctx => {
 	const {openid, miniprogram_state, message, order_an, total_account, order_center, id} = ctx.request.body;
 	const total_account_number = commerce_price(Number(total_account));
 	// 模板id - 要跟前端那边的弹窗授权权限弹窗相对应 不然无法成功验证
-	const template_id = 'bJPBBHnt8ibU-jTQZp7xhma4mPw8vIp0stZNW7ScgAY';
+	const template_id = 'uDf_R5R4uQ8jsyEhPojMIdOE3FwRq7IIWXNj0sb1m5I';
 	
 	// data: 模板内容
 	// 订单内容
