@@ -123,11 +123,22 @@ class addCuisineCheck extends checkout {
     }
 }
 
+// 校验不能为空
+class empty extends checkout {
+	start(text) {
+		const msg = [`${text}`];
+		super.isUndefiend(`${text}`, 202);
+		super.isObjNull(msg);
+		super.emptyString(msg);
+	}
+}
+
 // 抛出
 module.exports = {
     regCheckout,
     shopInfo,
     addCategoryCheck,
     getCuisineListCheck,
-    addCuisineCheck
+    addCuisineCheck,
+	empty
 }

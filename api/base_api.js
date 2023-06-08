@@ -33,6 +33,9 @@ const uploadApi = 'https://api.weixin.qq.com/tcb/databaseupdate?access_token=';
 // 发送订阅消息
 const subscribeMessageApi = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=';
 
+// 生成小程序码url
+const codeApi = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token='
+
 // 获取接口调用凭据 - 小程序 - 服务端
 class getToken {
     constructor() {}
@@ -111,6 +114,23 @@ class getToken {
 		}
 	}
 	
+	// 生成小程序码
+	// tableNumber: 桌号
+	async produceCode(tableNumber) {
+		try{
+			// 获取token
+			const token = await this.getTokenFn();
+			// 要转化成字符串
+			const obj = JSON.stringify({
+				page: 'pages/index/index=' + tableNumber
+			})
+			// {responseType: 'arraybuffer'} 解决axios返回的数据是二进制的
+			const res = await axios.post(codeApi + token, obj, {responseType: 'arraybuffer'})
+			return res
+		}catch(e){
+			throw new  handle(e, 500)
+		}
+	}
 }
 
 // 导出

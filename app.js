@@ -18,11 +18,14 @@ const login = require('./router/login/login');
 const upload = require('./router/upload/upload');
 // 引入订单 api
 const order = require('./router/order/order');
+// 引入生成小程序二维码
+const produceCode = require('./router/code/code');
 
 // 配置注册路由接口
 router.use('/api', login)  // 用户注册：localhost:8000/api/register
 router.use('/api', upload)
 router.use('/api', order)
+router.use('/api', produceCode)
 
 // 启动路由
 app.use(router.routes())
