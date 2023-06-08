@@ -26,7 +26,7 @@ moment.locale('zh-cn');
 const {empty} = require('../../utils/checkout');
 
 // 二维码二进制存储桶信息，命名
-const {buffer,bufferImgName} = require('../../jwt/buffer');
+const {bufferFn,bufferImgName} = require('../../jwt/buffer');
 
 // 生成小程序码
 router.post('/produceCode', new verifyToken().m, async ctx => {
@@ -38,10 +38,16 @@ router.post('/produceCode', new verifyToken().m, async ctx => {
 	
 	try{
 		const res = await new getToken().produceCode(table_number);
-		// console.log('res', res);
-		
-		const resimg = await buffer(bufferImgName(), res.data);
+		console.log('res',JSON.stringify( res.data));
+
+		const imgName = await bufferImgName(table_number);
+		console.log(imgName);
+
+		const resimg = await bufferFn(imgName,res.data);
 		console.log('resimg', resimg);
+
+		// const img = 'https://' + resimg.Location;
+		// console.log('img', img);
 	}catch(e){
 		new result(ctx, '生成二维码出错', 500).answer()
 	}

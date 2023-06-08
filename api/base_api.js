@@ -34,7 +34,7 @@ const uploadApi = 'https://api.weixin.qq.com/tcb/databaseupdate?access_token=';
 const subscribeMessageApi = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=';
 
 // 生成小程序码url
-const codeApi = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token='
+const codeApi = 'https://api.weixin.qq.com/wxa/getwxacode?access_token='
 
 // 获取接口调用凭据 - 小程序 - 服务端
 class getToken {
@@ -121,11 +121,9 @@ class getToken {
 			// 获取token
 			const token = await this.getTokenFn();
 			// 要转化成字符串
-			const obj = JSON.stringify({
-				page: 'pages/index/index=' + tableNumber
-			})
+			const obj = JSON.stringify({page: 'pages/index/index?number=' + tableNumber})
 			// {responseType: 'arraybuffer'} 解决axios返回的数据是二进制的
-			const res = await axios.post(codeApi + token, obj, {responseType: 'arraybuffer'})
+			const res = await axios.post(codeApi + token,obj,{responseType:'arraybuffer'})
 			return res
 		}catch(e){
 			throw new  handle(e, 500)
