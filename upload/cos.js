@@ -6,10 +6,13 @@ const multer = require('@koa/multer');
 // 引入腾讯云插件
 var COS = require('cos-nodejs-sdk-v5');
 var cos = new COS({
-    SecretId: 'AKIDjXItIfuxbFqX7XpywjP2d7QYWFj3Bi4E', // 子账号密钥id
-    SecretKey: 'z851yqeLqDUn5DESYSFqMyY1LUPH2hqn', // 子账号密钥key
+    SecretId: 'AKIDkNrEaomqiS1Vq58yiLn1LVTDl8Pex7ED', // 子账号密钥id
+ 	SecretKey: 'sa6ORHtHSQF792iBRhkpnY6WoxxnT2Sl', // 子账号密钥key
     Protocol: 'https:'
 });
+
+const Bucket = 'diancan-1317202885'; // 存储桶名称
+const Region = 'ap-guangzhou'; // 存储桶所在地区ip // ap-guangzhou
 
 // 存储文件到本地
 const storage = multer.diskStorage({
@@ -48,8 +51,7 @@ const storage = multer.diskStorage({
 // fileName: 传递进来的上传文件名称
 // filePath: 传递进来的上传文件路径
 // cosPath: 根据文件类型存放指定的文件目录
-const Bucket = 'diancan-1317202885'; // 存储桶名称
-const Region = 'ap-guangzhou'; // 存储桶所在地区ip // ap-guangzhou
+
 const cosFun = function (fileName, filePath, cosPath) {
     return new Promise((resolve, reject) => {
         cos.uploadFile({
@@ -78,5 +80,5 @@ const upload = multer({
 // 导出
 module.exports = {
     upload,
-    cosFun
+    cosFun,
 }

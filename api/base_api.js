@@ -104,10 +104,8 @@ class getToken {
 				miniprogram_state
 			}
 			
-			console.log('params', params);
+			await axios.post(subscribeMessageApi + token, params);
 			
-			const pp = await axios.post(subscribeMessageApi + token, params);
-			console.log('pp', pp);
 			
 		} catch(err) {
 			throw new handle('发送订阅消息失败，服务器发送错误', 500)
@@ -121,12 +119,12 @@ class getToken {
 			// 获取token
 			const token = await this.getTokenFn();
 			// 要转化成字符串
-			const obj = JSON.stringify({page: 'pages/index/index?number=' + tableNumber})
+			const obj = JSON.stringify({'page': 'pages/index/index?number=' + tableNumber,})
 			// {responseType: 'arraybuffer'} 解决axios返回的数据是二进制的
-			const res = await axios.post(codeApi + token,obj,{responseType:'arraybuffer'})
-			return res
+			const query = await axios.post(codeApi + token, obj, {responseType:'arraybuffer'})
+			return query
 		}catch(e){
-			throw new  handle(e, 500)
+			throw new handle(e, 500)
 		}
 	}
 }

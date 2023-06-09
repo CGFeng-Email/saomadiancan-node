@@ -1,26 +1,25 @@
  // 引入腾讯云插件
  var COS = require('cos-nodejs-sdk-v5');
+
  var cos = new COS({
- 	SecretId: 'AKIDjXItIfuxbFqX7XpywjP2d7QYWFj3Bi4E', // 子账号密钥id
- 	SecretKey: 'z851yqeLqDUn5DESYSFqMyY1LUPH2hqn', // 子账号密钥key
- 	Protocol: 'https:'
+ 	SecretId: 'AKIDkNrEaomqiS1Vq58yiLn1LVTDl8Pex7ED',
+ 	SecretKey: 'sa6ORHtHSQF792iBRhkpnY6WoxxnT2Sl'
  });
 
+let Bucket = 'diancan-1317202885'; // 存储桶名称
+let Region = 'ap-guangzhou'; // 存储桶所在地区ip
 
- // 处理返回的数据
- function bufferFn(keyName, bufferData) {
+ // 二进制流文件 生成二维码图片 存储进腾讯云存储桶 返回https 在线文件
+ function bufferFn(keyName, path) {
+	
  	return new Promise((resolve, reject) => {
- 		cos.putObject({
- 			Bucket: 'diancan-1317202885',
- 			/* 填入您自己的存储桶，必须字段 */
- 			Region: 'ap-guangzhou',
- 			/* 存储桶所在地域，例如 ap-beijing，必须字段 */
- 			Key: 'diancan/code/' + keyName,
- 			/* 存储在桶里的对象键（例如1.jpg，a/b/test.txt），必须字段 */
- 			Body: Buffer.from(bufferData),
- 			/* 必须: 二进制数据 */
- 		}, function(err, data) {
-			// console.log('999', err, data);
+		cos.putObject({
+			Bucket,
+			Region,
+			Key: 'diancan/code/' + keyName,   
+			Body: Buffer.from(path), 
+		}, function(err, data) {
+			// console.log('999', data);
 			resolve(data.Location)
 		});
  	})
@@ -28,10 +27,10 @@
 
  // 给二进制图片 随机命名
  function bufferImgName(num) {
- 	return new Date().getTime() + num + '.jpg';
+ 	return new Date().getTime() + '-' + num + '.jpg';
  }
 
  module.exports = {
-	bufferFn,
+ 	bufferFn,
  	bufferImgName
  }
