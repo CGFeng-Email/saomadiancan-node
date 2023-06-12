@@ -88,24 +88,21 @@ router.post('/register', async ctx => {
 })
 
 // 登录接口
-router.post('/login', async (ctx, next) => {
-    // 获取账号和密码
-    // console.log('login',ctx.request.body);
-    // console.log('header', ctx.req.headers);
-
+router.post('/login', async ctx => {
     // 解构账号,密码
     const {
         account,
         password
     } = ctx.request.body;
 
-    try {
-        // 查询记录操作语句
-        const query = `db.collection("register").where({account: '${account}', password: '${password}'}).get()`;
+     // 查询记录操作语句
+     const query = `db.collection("register").where({account: '${account}', password: '${password}'}).get()`;
 
+    try {
+       
         // 调用接口
         const res = await new getToken().publicApi(queryApi, query);
-        // console.log('res', res);
+        console.log('res', res);
 
         // 判断 - 有数据则登录成功，反之则账号密码出错
         if (res.errmsg == 'ok' && res.data.length > 0) {
@@ -121,10 +118,8 @@ router.post('/login', async (ctx, next) => {
             new result(ctx, '账号或密码错误', 202).answer()
         }
     } catch (error) {
-
+        new result(ctx, '服务器发生错误', 500).answer()
     }
-
-
 })
 
 // 商家信息上传

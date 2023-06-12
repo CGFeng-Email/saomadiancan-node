@@ -12,11 +12,11 @@ const qs = require('querystring');
 const params = qs.stringify({
     grant_type: 'client_credential',
     appid: 'wxb81dc480cbe6c823',
-    secret: 'a76ad380ffb198eb970443ba906b1f34'
+    secret: '2c04580615a5542e38986a58a61d12d4'
 })
 
 // 获取token的api·
-const url = 'https://api.weixin.qq.com/cgi-bin/token?' + params;
+const tokenApi = 'https://api.weixin.qq.com/cgi-bin/token?' + params;
 
 // 云服务器id
 const env = 'diancan-1gbnagvw311f423e';
@@ -38,13 +38,14 @@ const codeApi = 'https://api.weixin.qq.com/wxa/getwxacode?access_token='
 
 // 获取接口调用凭据 - 小程序 - 服务端
 class getToken {
+  
     constructor() {}
 
     // 获取token
     async getTokenFn() {
         try {
             // 发起请求 获取token
-            const res = await axios.get(url);
+            const res = await axios.get(tokenApi);
             // 判断请求
             if (res.status == 200) {
                 // 返回结果
@@ -65,6 +66,7 @@ class getToken {
     // url: 云开发api
     // query: 操作语句
     async publicApi(url, query) {
+        console.log('3');
         try {
             // 获取token
             const token = await this.getTokenFn();
@@ -119,7 +121,7 @@ class getToken {
 			// 获取token
 			const token = await this.getTokenFn();
 			// 要转化成字符串
-			const obj = JSON.stringify({'page': 'pages/index/index?number=' + tableNumber,})
+			const obj = JSON.stringify({'page': 'pages/select/select?number=' + tableNumber})
 			// {responseType: 'arraybuffer'} 解决axios返回的数据是二进制的
 			const query = await axios.post(codeApi + token, obj, {responseType:'arraybuffer'})
 			return query

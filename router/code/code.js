@@ -61,8 +61,7 @@ router.post('/produceCode', new verifyToken().m, async ctx => {
 
 			// 返回二维码二进制流
 			const res = await new getToken().produceCode(table_number);
-			console.log('res', res);
-
+			
 			// 随机命名
 			const imgName = await bufferImgName(table_number);
 			console.log(imgName);
@@ -77,18 +76,24 @@ router.post('/produceCode', new verifyToken().m, async ctx => {
 			// 生成上架时间
 			const time = moment().utcOffset(8).format('YYYY-MM-DD  HH:mm:ss')
 
+			const OBJ = {
+				time: time,
+				table_number: table_number,
+				code: imgcover,
+			}
+
 			// 新增桌号api
 			const tableNumberListAddApi = `db.collection('tableNumberList').add({data: {
 				time: '${time}',
 				table_number: '${table_number}',
-				code: '${imgcover}'
+				code: '${imgcover}',
 			}})`
 
 			// 调用接口
 			const addData = await new getToken().publicApi(addApi, tableNumberListAddApi);
 			console.log('addData', addData);
 
-			new result(ctx, '桌号添加成功').answer()
+			new result(ctx, '桌号添加成功', 200, OBJ).answer()
 		}
 
 	} catch (e) {
