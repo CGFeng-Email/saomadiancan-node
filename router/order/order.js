@@ -82,6 +82,7 @@ router.get('/viewOrderDetails', new verifyToken().m, async ctx => {
 router.post('/editOrderStatus', new verifyToken().m, async ctx => {
 	// 根据当前的订单id去修改接单信息
 	const {id, order_an, total_account, openid, miniprogram_state} = ctx.request.body;
+	// miniprogram_state: 小程序开发版本类型 跳转小程序类型：developer为开发版；trial为体验版；formal为正式版；默认为正式版
 	
 	// api 更新当前订单接单状态 改为已接单
 	const query = `db.collection('orderData').doc('${id}').update({data: {order_status: 'yes'}})`;
@@ -115,6 +116,7 @@ router.post('/editOrderStatus', new verifyToken().m, async ctx => {
 // 结账，并且发送结账订单订阅消息
 router.post('/checkout', new verifyToken().m, async ctx => {
 	const {openid, miniprogram_state, message, order_an, total_account, order_center, id} = ctx.request.body;
+	// 价格补0
 	const total_account_number = commerce_price(Number(total_account));
 	// 模板id - 要跟前端那边的弹窗授权权限弹窗相对应 不然无法成功验证
 	const template_id = 'uDf_R5R4uQ8jsyEhPojMIdOE3FwRq7IIWXNj0sb1m5I';

@@ -108,7 +108,6 @@ class getToken {
 			
 			await axios.post(subscribeMessageApi + token, params);
 			
-			
 		} catch(err) {
 			throw new handle('发送订阅消息失败，服务器发送错误', 500)
 		}
