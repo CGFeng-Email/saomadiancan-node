@@ -31,6 +31,6 @@ router.use('/api', produceCode)
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-// 自定义启动端口号 浏览器访问localhost:6000
+// 自定义启动端口号 浏览器访问localhost:8000
 app.listen(8000)
 console.log('koa-node扫码点餐服务启动');
