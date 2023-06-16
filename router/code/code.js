@@ -135,6 +135,7 @@ router.get('/sales', new verifyToken().m, async ctx => {
 			return moment().utcOffset(8).subtract(item, 'days').format('YYYY-MM-DD')
 		})
 		console.log('dataList', dataList);
+		// 转化字符串数据
 		const strinDataList = JSON.stringify(dataList);
 		console.log('strinDataList', strinDataList);
 		// 把dataList数组里面的每一项作为参数，发起请求，有就返回参数的数据
@@ -144,9 +145,9 @@ router.get('/sales', new verifyToken().m, async ctx => {
 		// 转化parse数据
 		const dataParse = res.data.map(item => {
 			return {
-				time: JSON.parse(item).time,
-				total_account: JSON.parse(item).total_account,
-				unix: moment(JSON.parse(item).time).unix() // 时间戳，后面的柱状图会根据时间戳进行排序
+				time: JSON.parse(item).time, // 日期
+				total_account: JSON.parse(item).total_account, // 总金额
+				unix: moment(JSON.parse(item).time).unix() // 时间戳，生成当前日期的时间戳，后面的柱状图会根据时间戳进行排序
 			}
 		})
 		console.log('dataParse', dataParse);
@@ -160,7 +161,7 @@ router.get('/sales', new verifyToken().m, async ctx => {
 			}
 		})
 		console.log('list_data', list_data);
-		// 合并两个数组, 方便利用重复数据替换重复的数据，这样就可生成一个1～7天的数据数组
+		// 合并两个数组, 方便利用对象重复数据过滤替换，这样就可生成一个1～7天的数据数组
 		const obj = {};
 		const list = [...dataParse, ...list_data].reduce((prev, item) => {
 			// prev: 初始值，第一次遍历接受上一次的值[]。可以存储上一次遍历的结果，会一直存储到结束
