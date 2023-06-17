@@ -1,5 +1,10 @@
 // 路由 实例化new路由
 const router = require('koa-router')();
+const cloud = require('wx-server-sdk');
+cloud.init({
+    env: 'diancan-1gbnagvw311f423e'
+})
+const db = cloud.database()
 
 // 引入校验方法
 const {
@@ -60,14 +65,17 @@ router.post('/register', async ctx => {
     try {
         // 调用查询记录 api
         const res = await new getToken().publicApi(queryApi, query);
+
         // console.log('查询记录', res);
         if (res.data.length > 0) {
             // 数据大于0，说明已经注册过了，提示重新登录
-            new result(ctx, '用户已注册', 202).answer()
+            new result(ctx, '用户已注册', 202).answer();
+
         } else {
             // 没有注册过
             // 准备: 账号，密码，商家唯一标识uid
             const uid = new Date().getTime(); // getTime()方法可以获取到毫秒数
+
             const obj = {
                 uid,
                 account,
@@ -94,12 +102,16 @@ router.post('/login', async ctx => {
         account,
         password
     } = ctx.request.body;
+    console.log(123);
+    // 查询记录操作语句
+    // const db_api = db.collection('register');
+    // const query = JSON.stringify(db_api) + `.where({account: '${account}', password: '${password}'}).get()`;
 
-     // 查询记录操作语句
-     const query = `db.collection("register").where({account: '${account}', password: '${password}'}).get()`;
+    const query = `db.collection("register").where({account: '${account}', password: '${password}'}).get()`;
+    console.log('query', query);
 
     try {
-       
+
         // 调用接口
         const res = await new getToken().publicApi(queryApi, query);
         console.log('res', res);
