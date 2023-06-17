@@ -18,4 +18,4 @@ COPY . ./
 # Run the web service on container startup.
 # 上传云服务器 npm: 自动安装依赖
 # test: 与package.js -> scripts -> test保持一致
-CMD [ "cnpm", "test" ]
+CMD [ "npm", "test" ]
