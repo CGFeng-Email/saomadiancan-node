@@ -1,10 +1,5 @@
 // 路由 实例化new路由
 const router = require('koa-router')();
-const cloud = require('wx-server-sdk');
-cloud.init({
-    env: 'diancan-1gbnagvw311f423e'
-})
-const db = cloud.database()
 
 // 引入校验方法
 const {

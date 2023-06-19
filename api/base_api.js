@@ -12,7 +12,7 @@ const qs = require('querystring');
 const params = qs.stringify({
     grant_type: 'client_credential',
     appid: 'wxb81dc480cbe6c823',
-    secret: '2c04580615a5542e38986a58a61d12d4'
+    secret: '1bb1b7332de776f40a3d931c4aea8a90'
 })
 
 // 获取token的api·
